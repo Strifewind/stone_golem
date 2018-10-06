@@ -14,7 +14,7 @@ defmodule StoneGolem do
 
   """
   defstruct [
-    id: "UUID4",
+    id: "Slug-of-name-player-level-class",
     name: "Edgar Markov",
     player: "Strifewind",
     class: :warrior,
