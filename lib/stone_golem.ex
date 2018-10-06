@@ -1,6 +1,6 @@
 defmodule StoneGolem do
   @moduledoc """
-  Documentation for StoneGolem.
+  Documentation for StoneGolem main module.
   """
 
   @doc """
