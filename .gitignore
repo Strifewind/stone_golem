@@ -23,3 +23,4 @@ erl_crash.dump
 stone_golem-*.tar
 
 /.elixir_ls/
+mix.lock
