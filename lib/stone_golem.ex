@@ -7,12 +7,20 @@ defmodule StoneGolem do
   StoneGolem character generator main struct. first pass is built to identify
   parts of a character sheet for a basic D & D Campaign. I would like to build
 
-  ## Examples
-
-      iex> StoneGolem.hello
-      :world
 
   """
+
+  def create(golem) do
+    name(golem)
+  end
+
+
+  defp name(golem) do
+    Map.fetch(golem, :name)
+
+
+  end
+
   defstruct [
     id: "Slug-of-name-player-level-class",
     name: "Edgar Markov",
