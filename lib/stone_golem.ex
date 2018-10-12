@@ -8,19 +8,6 @@ defmodule StoneGolem do
   parts of a character sheet for a basic D & D Campaign. I would like to build
 
 
-  """
-
-  def create(golem) do
-    name(golem)
-  end
-
-
-  defp name(golem) do
-    Map.fetch(golem, :name)
-
-
-  end
-
   defstruct [
     id: "Slug-of-name-player-level-class",
     name: "Edgar Markov",
@@ -60,5 +47,22 @@ defmodule StoneGolem do
     skill: [:skill_name, "Calculated skill value?"]
   ]
 
+  """
+
+  def create(data) do
+    golem = struct(StoneGolem.Golem, data)
+    Map.put_new(golem, :name, name(data))
+  end
+
+
+  defp name(data) do
+    Map.fetch(data, :name)
+  end
+
+  defmodule Golem do
+    defstruct [
+      name: nil
+    ]
+  end
 
 end
