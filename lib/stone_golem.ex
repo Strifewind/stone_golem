@@ -1,4 +1,6 @@
 defmodule StoneGolem do
+
+
   @moduledoc """
   Documentation for StoneGolem main module.
   """
@@ -50,19 +52,47 @@ defmodule StoneGolem do
   """
 
   def create(data) do
-    golem = struct(StoneGolem.Golem, data)
-    Map.put_new(golem, :name, name(data))
+    golem = struct!(StoneGolem, data)
+    {:ok, golem}
   end
 
+  @enforce_keys [:name, :class, :race]
 
-  defp name(data) do
-    Map.fetch(data, :name)
+  defstruct [
+    :name,
+    :class,
+    :race,
+    level: 1,
+    experience: 0,
+    alignment: nil,
+    diety: nil,
+    age: nil,
+    gender: nil,
+    weight: nil,
+    height: nil,
+    eye_colour: nil,
+    hair_colour: nil,
+  ]
+
+  @type class :: :warrior | :wizard | :rogue | :ranger | :sorcerer | :bard | :druid | :barbarian
+
+  @type race :: :human | :elf | :dwarf | :halfling | :gnome | :halforc | :halfelf
+
+  @type alignment :: :lawfulgood | :neutralgood | :chaoticgood | :lawfulneutral | :neutral | :chaoticneutral | :lawfulevil | :neutralevil | :chaoticevil
+
+  @type t :: %__MODULE__{
+    name: String.t(),
+    class: class(),
+    race: race(),
+    level: pos_integer(),
+    experience: non_neg_integer(),
+    alignment: nil | alignment(),
+    diety: nil | String.t(),
+    age: nil | non_neg_integer(),
+    gender: nil | String.t(),
+    weight: nil | String.t(),
+    height: nil | String.t(),
+    eye_colour: nil | String.t(),
+    hair_colour: nil | String.t(),
+  }
   end
-
-  defmodule Golem do
-    defstruct [
-      name: nil
-    ]
-  end
-
-end
