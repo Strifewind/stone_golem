@@ -31,6 +31,13 @@ defmodule StoneGolemTest do
     assert golem.level == 1
   end
 
+  test "give edgar an id plz" do
+    golem = basic_edgar()
+    assert golem.id == "edgar_markov-human-warrior"  # firstname_lastname-race-class lowercase normalized
+  end
+
+
+
   defp basic_edgar do
     {:ok, golem} = StoneGolem.create(%{name: "Edgar Markov", class: :warrior, race: :human})
     golem

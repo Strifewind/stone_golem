@@ -53,6 +53,7 @@ defmodule StoneGolem do
 
   def create(data) do
     golem = struct!(StoneGolem, data)
+    |> apply_id
     {:ok, golem}
   end
 
@@ -64,6 +65,7 @@ defmodule StoneGolem do
     :race,
     level: 1,
     experience: 0,
+    id: nil,
     alignment: nil,
     diety: nil,
     age: nil,
@@ -86,6 +88,7 @@ defmodule StoneGolem do
     race: race(),
     level: pos_integer(),
     experience: non_neg_integer(),
+    id: nil | String.t(),
     alignment: nil | alignment(),
     diety: nil | String.t(),
     age: nil | non_neg_integer(),
@@ -95,4 +98,14 @@ defmodule StoneGolem do
     eye_colour: nil | String.t(),
     hair_colour: nil | String.t(),
   }
+
+    defp apply_id(golem) do
+      %{golem | id: gen_id(golem)}
+    end
+
+    defp gen_id(golem) do
+      nslug = Slug.slugify(golem.name, separator: "_")
+      Enum.join([nslug, golem.race, golem.class], "-")
+    end
+
   end
