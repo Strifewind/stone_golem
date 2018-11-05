@@ -1,6 +1,4 @@
 defmodule StoneGolem do
-
-
   @moduledoc """
   Documentation for StoneGolem main module.
   """
@@ -28,6 +26,9 @@ defmodule StoneGolem do
     eye_colour: "hazel",
     hair_colour: "black",
 
+
+    seperate function for each attribute, store base state in struct.
+
     strength: 25,
     dexterity: 18,
     constitution: 14,
@@ -52,10 +53,14 @@ defmodule StoneGolem do
   """
 
   def create(data) do
-    golem = struct!(StoneGolem, data)
-    |> apply_id
+    golem =
+      struct!(StoneGolem, data)
+      |> apply_id
+
     {:ok, golem}
   end
+
+  @default_value 10
 
   @enforce_keys [:name, :class, :race]
 
@@ -74,38 +79,85 @@ defmodule StoneGolem do
     height: nil,
     eye_colour: nil,
     hair_colour: nil,
+    strength: @default_value,
+    dexterity: @default_value,
+    constitution: @default_value,
+    intelligence: @default_value,
+    wisdom: @default_value,
+    charisma: @default_value
   ]
 
   @type class :: :warrior | :wizard | :rogue | :ranger | :sorcerer | :bard | :druid | :barbarian
 
   @type race :: :human | :elf | :dwarf | :halfling | :gnome | :halforc | :halfelf
 
-  @type alignment :: :lawfulgood | :neutralgood | :chaoticgood | :lawfulneutral | :neutral | :chaoticneutral | :lawfulevil | :neutralevil | :chaoticevil
+  @type alignment ::
+          :lawfulgood
+          | :neutralgood
+          | :chaoticgood
+          | :lawfulneutral
+          | :neutral
+          | :chaoticneutral
+          | :lawfulevil
+          | :neutralevil
+          | :chaoticevil
+
+  @type ability :: :strength | :dexterity | :constitution | :intelligence | :wisdom | :charisma
 
   @type t :: %__MODULE__{
-    name: String.t(),
-    class: class(),
-    race: race(),
-    level: pos_integer(),
-    experience: non_neg_integer(),
-    id: nil | String.t(),
-    alignment: nil | alignment(),
-    diety: nil | String.t(),
-    age: nil | non_neg_integer(),
-    gender: nil | String.t(),
-    weight: nil | String.t(),
-    height: nil | String.t(),
-    eye_colour: nil | String.t(),
-    hair_colour: nil | String.t(),
-  }
+          name: String.t(),
+          class: class(),
+          race: race(),
+          level: pos_integer(),
+          experience: non_neg_integer(),
+          id: nil | String.t(),
+          alignment: nil | alignment(),
+          diety: nil | String.t(),
+          age: nil | non_neg_integer(),
+          gender: nil | String.t(),
+          weight: nil | String.t(),
+          height: nil | String.t(),
+          eye_colour: nil | String.t(),
+          hair_colour: nil | String.t(),
+          strength: 0..30,
+          dexterity: 0..30,
+          constitution: 0..30,
+          intelligence: 0..30,
+          wisdom: 0..30,
+          charisma: 0..30
+        }
 
-    defp apply_id(golem) do
-      %{golem | id: gen_id(golem)}
-    end
-
-    defp gen_id(golem) do
-      nslug = Slug.slugify(golem.name, separator: "_")
-      Enum.join([nslug, golem.race, golem.class], "-")
-    end
-
+  defp apply_id(golem) do
+    %{golem | id: gen_id(golem)}
   end
+
+  defp gen_id(golem) do
+    nslug = Slug.slugify(golem.name, separator: "_")
+    Enum.join([nslug, golem.race, golem.class], "-")
+  end
+
+  @spec get_ability(golem :: t, ability) :: nil | 0..30
+  def get_ability(golem, ability) do
+    case Map.get(golem, ability) do
+      nil ->
+        nil
+
+      initial_value ->
+        initial_value + racial_ability_adjustment(golem.race, ability)
+    end
+  end
+
+  @spec racial_ability_adjustment(race, ability) :: integer
+  def racial_ability_adjustment(:elf, :dexterity), do: 2
+  def racial_ability_adjustment(:elf, :constitution), do: -2
+  def racial_ability_adjustment(:dwarf, :constitution), do: 2
+  def racial_ability_adjustment(:dwarf, :charisma), do: -2
+  def racial_ability_adjustment(:gnome, :constitution), do: 2
+  def racial_ability_adjustment(:gnome, :strength), do: -2
+  def racial_ability_adjustment(:halfling, :dexterity), do: 2
+  def racial_ability_adjustment(:halfling, :strength), do: -2
+  def racial_ability_adjustment(:halforc, :strength), do: 2
+  def racial_ability_adjustment(:halforc, :intelligence), do: -2
+  def racial_ability_adjustment(:halforc, :charisma), do: -2
+  def racial_ability_adjustment(_, _), do: 0
+end
