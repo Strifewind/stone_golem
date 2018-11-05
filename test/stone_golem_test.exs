@@ -32,13 +32,13 @@ defmodule StoneGolemTest do
 
   test "Racial ability modifiers will be applied on creation" do
     golem = tanis_the_elf()
-    assert StoneGolem.get_ability(golem, :constitution) == 8
-    assert StoneGolem.get_ability(golem, :dexterity) == 12
+    assert StoneGolem.get_ability_score(golem, :constitution) == 8
+    assert StoneGolem.get_ability_score(golem, :dexterity) == 12
   end
 
   test "Will get nil for invalid ability" do
     golem = tanis_the_elf()
-    assert StoneGolem.get_ability(golem, :ability_that_does_not_exist) == nil
+    assert StoneGolem.get_ability_score(golem, :ability_that_does_not_exist) == nil
   end
 
   test "can create a StoneGolem with just a name" do

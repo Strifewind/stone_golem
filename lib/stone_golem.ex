@@ -127,17 +127,19 @@ defmodule StoneGolem do
           charisma: 0..30
         }
 
+  @spec apply_id(golem :: t) :: t
   defp apply_id(golem) do
     %{golem | id: gen_id(golem)}
   end
 
+  @spec gen_id(golem :: t) :: String.t()
   defp gen_id(golem) do
     nslug = Slug.slugify(golem.name, separator: "_")
     Enum.join([nslug, golem.race, golem.class], "-")
   end
 
-  @spec get_ability(golem :: t, ability) :: nil | 0..30
-  def get_ability(golem, ability) do
+  @spec get_ability_score(golem :: t, ability) :: nil | 0..30
+  def get_ability_score(golem, ability) do
     case Map.get(golem, ability) do
       nil ->
         nil
@@ -159,5 +161,5 @@ defmodule StoneGolem do
   def racial_ability_adjustment(:halforc, :strength), do: 2
   def racial_ability_adjustment(:halforc, :intelligence), do: -2
   def racial_ability_adjustment(:halforc, :charisma), do: -2
-  def racial_ability_adjustment(_, _), do: 0
+  def racial_ability_adjustment(_race, _ability), do: 0
 end
