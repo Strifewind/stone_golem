@@ -41,6 +41,13 @@ defmodule StoneGolemTest do
     assert StoneGolem.get_ability_score(golem, :ability_that_does_not_exist) == nil
   end
 
+  test "Find the atribute roll modifier" do
+    golem = tanis_the_elf()
+    assert StoneGolem.get_ability_mod(golem, :constitution) == -1
+    assert StoneGolem.get_ability_mod(golem, :dexterity) == 1
+    assert StoneGolem.get_ability_mod(golem, :strength) == 0
+  end
+
   test "can create a StoneGolem with just a name" do
     golem = basic_edgar()
     assert golem.name == "Edgar Markov"

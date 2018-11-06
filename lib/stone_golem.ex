@@ -162,4 +162,48 @@ defmodule StoneGolem do
   def racial_ability_adjustment(:halforc, :intelligence), do: -2
   def racial_ability_adjustment(:halforc, :charisma), do: -2
   def racial_ability_adjustment(_race, _ability), do: 0
+
+  @spec get_ability_mod(golem :: t, ability) :: nil | -5..20
+  def get_ability_mod(golem, ability) do
+    case get_ability_score(golem, ability) do
+      nil ->
+        nil
+
+      x when x in 0..1 ->
+        -5
+
+      x when x in 2..3 ->
+        -4
+
+      x when x in 4..5 ->
+        -3
+
+      x when x in 6..7 ->
+        -2
+
+      x when x in 8..9 ->
+        -1
+
+      x when x in 10..11 ->
+        0
+
+      x when x in 12..13 ->
+        1
+
+      x when x in 14..15 ->
+        2
+
+      x when x in 16..17 ->
+        3
+
+      x when x in 18..19 ->
+        4
+
+      x when x in 20..21 ->
+        5
+
+      x when x in 22..23 ->
+        6
+    end
+  end
 end
