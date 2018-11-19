@@ -56,7 +56,7 @@ defmodule StoneGolem do
     golem =
       struct!(StoneGolem, data)
       |> apply_id
-
+      |> apply_exp
     {:ok, golem}
   end
 
@@ -130,6 +130,21 @@ defmodule StoneGolem do
   @spec apply_id(golem :: t) :: t
   defp apply_id(golem) do
     %{golem | id: gen_id(golem)}
+  end
+
+  @spec apply_exp(golem :: t) :: t
+  defp apply_exp(golem) do
+    %{golem | experience: fill_exp(golem) , level: fill_level(golem)}
+  end
+
+  @spec fill_exp(golem :: t) :: integer
+  defp fill_exp(golem) do
+    golem.experience
+  end
+
+  @spec fill_level(golem :: t) :: integer
+  defp fill_level(golem) do
+    golem.level
   end
 
   @spec gen_id(golem :: t) :: String.t()
